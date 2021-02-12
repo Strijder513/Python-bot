@@ -15,34 +15,7 @@ black = 0x000000
 token = 'Your Token Here'
 
 
-@client.event
-async def on_message(message):
-    if message.author == client.user:
-        return
-    if message.content.startswith("is darren gay?"):
-        await message.channel.send("calculating")
-        time.sleep(6.0)
-        await message.channel.send("75% done")
-        time.sleep(2.0)
-        await message.channel.send("100% done. He is 1000000000x gayer then james charles")
-    elif message.content.startswith("is kai gay?"):
-        time.sleep(0.0)
-        await message.channel.send("calculating")
-        time.sleep(6.0)
-        await message.channel.send("75% done")
-        time.sleep(2.0)
-        await message.channel.send("100% done. He is not gay")
-    elif message.content.startswith("is jak gay?"):
-        await message.channel.send("calculating")
-        time.sleep(6.0)
-        await message.channel.send("70%")
-        time.sleep(2.0)
-        await message.channel.send("80%")
-        time.sleep(2.00)
-        await message.channel.send("90%")
-        time.sleep(2.00)
-        await message.channel.send("Not gay. just gangster")
-    await client.process_commands(message)
+
 
 
 @client.event
@@ -76,18 +49,19 @@ async def embed(ctx):
 
 
 @client.command()
-async def biggestgangsters(ctx):
-    embed3 = discord.Embed(title="biggestgangsters",
+async def bothelpers(ctx):
+    embed3 = discord.Embed(title="bothelpers",
 
                            description="""
 
-    Biggest Gangsters : 
+    Biggest Helpers : 
 
-    De een en alleen gangster#0733 (Reason : Just Natural)
+    De een en alleen gangster#0733 (Reason : Maker)
 
-    kais dad#5789 (Reason: Finally Put Helen In Her Place)
-
-    GANGSTER#6680 (Reason: Helped Me With Bot And His Name Is Legit Gangster)
+    kais dad#5789 
+    
+    GANGSTER#6680 
+    
     """, colour=black)
     embed3.set_author(name=ctx.author.display_name, icon_url=ctx.author.avatar_url)
     embed3.set_thumbnail(url="https://i.imgur.com/r3OtRxy.jpg")
