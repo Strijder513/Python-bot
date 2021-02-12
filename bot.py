@@ -92,10 +92,6 @@ async def on_command_error(ctx1, error):
 
 
 
-@client.command()
-async def ping(ctx):
-    await ctx.send("nigga")
-
 
 @client.command()
 async def clear(ctx, amount=10, ):
