@@ -1,19 +1,17 @@
 import discord
 from discord.ext import commands
-import time
 import random
 import youtube_dl
 import os
+import datetime
+import time
+from datetime import datetime
+
 
 client = commands.Bot(command_prefix='.')
-
-
-#says it's playing a game 
-game = discord.Game("")
+game = discord.Game("een gangster voor mijn neger zijn")
 black = 0x000000
-#token for client.run()
-token = 'Your Token Here'
-
+token = ''
 
 
 
@@ -24,6 +22,8 @@ async def on_ready():
     print("on")
     print('------------')
     await client.change_presence(status=discord.Status.do_not_disturb, activity=game)
+    global startdate
+    startdate = datetime.now()
 
 
 @client.command()
@@ -40,28 +40,38 @@ async def embed(ctx):
     embed2 = discord.Embed(title="embeds you can use",
                            description="""
 
+
+
     .website
-    .biggestgangsters
+    .helpers
 
     """, color=0xFF5733)
     embed2.set_author(name=ctx.author.display_name, icon_url=ctx.author.avatar_url)
     await ctx.send(embed=embed2)
 
 
+
+
 @client.command()
-async def bothelpers(ctx):
-    embed3 = discord.Embed(title="bothelpers",
+async def uptime(ctx):
+    now = datetime.now()
+    uptime = now - startdate
+    await ctx.send(f'```{uptime}```')
+
+
+@client.command()
+async def helpers(ctx):
+    embed3 = discord.Embed(title="helpers",
 
                            description="""
 
-    Biggest Helpers : 
+    Helpers
 
     De een en alleen gangster#0733 (Reason : Maker)
 
     kais dad#5789 
-    
+
     GANGSTER#6680 
-    
     """, colour=black)
     embed3.set_author(name=ctx.author.display_name, icon_url=ctx.author.avatar_url)
     embed3.set_thumbnail(url="https://i.imgur.com/r3OtRxy.jpg")
@@ -71,6 +81,15 @@ async def bothelpers(ctx):
 @client.command()
 async def latency(ctx):
     await ctx.send(f'{round(client.latency * 1000)}ms')
+
+
+@client.event
+async def on_command_error(ctx1, error):
+    if isinstance(error, commands.MissingRequiredArgument):
+        await ctx1.send('you need the requirements homes https://tenor.com/view/homes-cholo-swag-kid-cool-gif-14704703')
+    if isinstance(error, commands.MissingPermissions):
+        await ctx1.send('no permissions homes https://tenor.com/view/homes-cholo-swag-kid-cool-gif-14704703')
+
 
 
 @client.command()
@@ -101,13 +120,6 @@ async def ban(ctx, member: discord.Member, *, reason=None):
     await ctx.send(f'Banned {member.mention}')
 
 
-@client.event
-async def on_command_error(ctx1, error):
-    if isinstance(error, commands.MissingRequiredArgument):
-        await ctx1.send('you need the requirements homes https://tenor.com/view/homes-cholo-swag-kid-cool-gif-14704703')
-    if isinstance(error, commands.MissingPermissions):
-        await ctx1.send('no permissions homes https://tenor.com/view/homes-cholo-swag-kid-cool-gif-14704703')
-
 
 @client.command()
 async def join(ctx):
@@ -119,6 +131,38 @@ async def join(ctx):
 
 @client.command()
 async def play(ctx, url: str):
+    voice = discord.utils.get(client.voice_clients, guild=ctx.guild)
+    if not voice.is_connected():
+        await ctx.send("I'M NOT IN THE FUCKING CALL")
+    else:
+        await ctx.send("playing song...")
+        song_there = os.path.isfile("song.mp3")
+        try:
+            if song_there:
+                os.remove("song.mp3")
+        except PermissionError:
+            await ctx.send("Song playing, stop it or listen to it")
+            return
+
+        ydl_opts = {
+            'format': 'bestaudio/best',
+            'postprocessors': [{
+                'key': 'FFmpegExtractAudio',
+                'preferredcodec': 'mp3',
+                'preferredquality': '192',
+            }],
+        }
+        with youtube_dl.YoutubeDL(ydl_opts) as ydl:
+            ydl.download([url])
+        for file in os.listdir("./"):
+            if file.endswith(".mp3"):
+                os.rename(file, "song.mp3")
+        voice.play(discord.FFmpegPCMAudio("song.mp3"))
+        return
+
+
+@client.command()
+async def p(ctx, url: str):
     voice = discord.utils.get(client.voice_clients, guild=ctx.guild)
     if not voice.is_connected():
         await ctx.send("I'M NOT IN THE FUCKING CALL")
