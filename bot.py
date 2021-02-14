@@ -67,7 +67,7 @@ async def helpers(ctx):
 
     Helpers
 
-    De een en alleen gangster#0733 (Reason : Maker)
+    De een en alleen gangster#0733 (Reason : Make)
 
     kais dad#5789 
 
