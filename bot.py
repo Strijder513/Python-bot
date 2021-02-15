@@ -21,6 +21,7 @@ async def on_ready():
     print("------------")
     print("on")
     print('------------')
+    client.load_extension('cogs.music')
     await client.change_presence(status=discord.Status.do_not_disturb, activity=game)
     global startdate
     startdate = datetime.now()
@@ -125,99 +126,10 @@ async def join(ctx):
     await ctx.send(f'ready to play music on ***{voiceChannel}***')
 
 
-@client.command()
-async def play(ctx, url: str):
-    voice = discord.utils.get(client.voice_clients, guild=ctx.guild)
-    if not voice.is_connected():
-        await ctx.send("I'M NOT IN THE FUCKING CALL")
-    else:
-        await ctx.send("playing song...")
-        song_there = os.path.isfile("song.mp3")
-        try:
-            if song_there:
-                os.remove("song.mp3")
-        except PermissionError:
-            await ctx.send("Song playing, stop it or listen to it")
-            return
-
-        ydl_opts = {
-            'format': 'bestaudio/best',
-            'postprocessors': [{
-                'key': 'FFmpegExtractAudio',
-                'preferredcodec': 'mp3',
-                'preferredquality': '192',
-            }],
-        }
-        with youtube_dl.YoutubeDL(ydl_opts) as ydl:
-            ydl.download([url])
-        for file in os.listdir("./"):
-            if file.endswith(".mp3"):
-                os.rename(file, "song.mp3")
-        voice.play(discord.FFmpegPCMAudio("song.mp3"))
-        return
 
 
-@client.command()
-async def p(ctx, url: str):
-    voice = discord.utils.get(client.voice_clients, guild=ctx.guild)
-    if not voice.is_connected():
-        await ctx.send("I'M NOT IN THE FUCKING CALL")
-    else:
-        await ctx.send("playing song...")
-        song_there = os.path.isfile("song.mp3")
-        try:
-            if song_there:
-                os.remove("song.mp3")
-        except PermissionError:
-            await ctx.send("Song playing, stop it or listen to it")
-            return
-
-        ydl_opts = {
-            'format': 'bestaudio/best',
-            'postprocessors': [{
-                'key': 'FFmpegExtractAudio',
-                'preferredcodec': 'mp3',
-                'preferredquality': '192',
-            }],
-        }
-        with youtube_dl.YoutubeDL(ydl_opts) as ydl:
-            ydl.download([url])
-        for file in os.listdir("./"):
-            if file.endswith(".mp3"):
-                os.rename(file, "song.mp3")
-        voice.play(discord.FFmpegPCMAudio("song.mp3"))
-        return
 
 
-@client.command()
-async def leave(ctx):
-    voice = discord.utils.get(client.voice_clients, guild=ctx.guild)
-    await voice.disconnect()
-    messageone = "why are you forcing me to leave bro?"
-    messagetwo = "that's not very gangster bro"
-    rand = (messageone, messagetwo)[random.randint(0, 1)]
-    await ctx.send(rand)
-
-
-@client.command()
-async def pause(ctx):
-    voice = discord.utils.get(client.voice_clients, guild=ctx.guild)
-    await ctx.send("pausing...")
-    await voice.pause()
-
-
-@client.command()
-async def resume(ctx):
-    voice = discord.utils.get(client.voice_clients, guild=ctx.guild)
-    await ctx.send("resuming...")
-    await voice.resume()
-
-
-@client.command()
-async def stop(ctx):
-    voice = discord.utils.get(client.voice_clients, guild=ctx.guild)
-    await ctx.send("stopping...")
-    await voice.stop()
 
 
 client.run(token)
